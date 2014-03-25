@@ -32,6 +32,14 @@ group :doc do
   gem 'sdoc', require: false
 end
 
+gem "typhoeus"
+
+gem "rb-readline"
+
+gem "pry"
+
+gem 'xml-simple'
+
 # Use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.1.2'
 
