@@ -15,20 +15,25 @@
 	</ul>
 </p>
 
-
-<table>
-	<tr class="<%= cycle('list_line_odd', 'list_line_even') %>">
-		<td>
-			<%= image_tag(@item.pic_url, class: 'list_image') %>
-		</td>
-		<td class="list_description">
-			<dl>
-				<dt><%= @item.title %></dt>
-				<dd><%= "price: #{@item.item_price}, shipping cost: #{@item.shipping_price}" %></dd>
-			</dl>
-		</td>
-		<td class="list_actions">
-			<%= link_to 'Show on eBay', @item.view_url %><br/>
-		</td>
-	</tr>
-</table>
+<% if @item.nil? %>
+	<p>
+		currently there is no matching item on eBay
+	</p>
+<% else %>
+	<table>
+		<tr class="<%= cycle('list_line_odd', 'list_line_even') %>">
+			<td>
+				<%= image_tag(@item.pic_url, class: 'list_image') %>
+			</td>
+			<td class="list_description">
+				<dl>
+					<dt><%= @item.title %></dt>
+					<dd><%= "price: #{@item.item_price}, shipping cost: #{@item.shipping_price}" %></dd>
+				</dl>
+			</td>
+			<td class="list_actions">
+				<%= link_to 'Show on eBay', @item.view_url %><br/>
+			</td>
+		</tr>
+	</table>
+<% end %>

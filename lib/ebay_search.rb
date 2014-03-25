@@ -15,9 +15,16 @@ class EbaySearch
 		# do some request checking
 		xml = request.response.body
 		hash = XmlSimple.xml_in(xml)
+
+		# puts "*********** hash:"
+		# pp hash
+
+		return nil if hash["searchResult"][0]["count"]  == "0"
+
 		item_hash = hash["searchResult"][0]["item"][0]
 
-		pp item_hash
+		# puts "*********** item_hash:"
+		# pp item_hash
 		return create_item(item_hash)
 	end
 
