@@ -1,0 +1,2 @@
+module CheapestHelper
+end
