@@ -1,1 +1,34 @@
-<%= @hash %>
+<h1>The cheapest matching item on eBay</h1>
+
+<p>
+	query: <%=@query%>
+</p>
+
+<h2>Added criteria:</h2>
+
+<p>
+	<ul>
+		<li>currently active</li>
+		<li>available in the U.S.</li>
+		<li>condition: new</li>
+		<li>price: fixed</li>
+	</ul>
+</p>
+
+
+<table>
+	<tr class="<%= cycle('list_line_odd', 'list_line_even') %>">
+		<td>
+			<%= image_tag(@item.pic_url, class: 'list_image') %>
+		</td>
+		<td class="list_description">
+			<dl>
+				<dt><%= @item.title %></dt>
+				<dd><%= "price: #{@item.item_price}, shipping cost: #{@item.shipping_price}" %></dd>
+			</dl>
+		</td>
+		<td class="list_actions">
+			<%= link_to 'Show on eBay', @item.view_url %><br/>
+		</td>
+	</tr>
+</table>

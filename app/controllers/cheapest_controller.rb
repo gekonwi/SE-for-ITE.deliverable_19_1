@@ -5,6 +5,7 @@ class CheapestController < ApplicationController
 	end
 
 	def show
-		@hash = EbaySearch.cheapest_item(params[:q])
+		@query = params[:q]
+		@item = EbaySearch.cheapest_item(@query)
 	end
 end

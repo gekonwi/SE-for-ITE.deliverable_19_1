@@ -5,7 +5,7 @@ class EbaySearch
 	MY_APP_ID = "GeorgKon-f675-471e-9e8a-9fdb2e584344"
 
 	# Returns an Item object repreenting the currently offered
-	# ebay item with the lowest item_prize+shipping_prize and
+	# ebay item with the lowest item_price+shipping_price and
 	# a title which matches the query.
 	#
 	# If there is no such item this returns nil.
@@ -14,10 +14,11 @@ class EbaySearch
 		request.run
 		# do some request checking
 		xml = request.response.body
-
 		hash = XmlSimple.xml_in(xml)
+		item_hash = hash["searchResult"][0]["item"][0]
 
-		return hash["searchResult"][0]["item"].size
+		pp item_hash
+		return create_item(item_hash)
 	end
 
 	private
@@ -40,9 +41,28 @@ class EbaySearch
 				"itemFilter(2).name" => "ListingType",
 				"itemFilter(2).value" => "FixedPrice",
 				"sortOrder" => "PricePlusShippingLowest",
-				"paginationOutput.totalEntries" =>  1
+				"paginationInput.entriesPerPage" =>  1 # request only the first item
 				},
 				headers: { Accept: " application/xmll" }
 			)
+	end
+
+	def self.create_item(hash)
+		item = Item.new
+		item.title = hash["title"][0]
+
+		current_price = hash["sellingStatus"][0]["currentPrice"][0]
+		if current_price["currencyId"] != "USD"
+			current_price = hash["sellingStatus"][0]["convertedCurrentPrice"][0]
+		end
+		item.item_price = "USD #{current_price["content"]}"
+
+		shipping_cost_info = hash["shippingInfo"][0]["shippingServiceCost"][0]
+		item.shipping_price = "#{shipping_cost_info["currencyId"]} #{shipping_cost_info["content"]}"
+
+		item.view_url = hash["viewItemURL"][0]
+		item.pic_url = hash["galleryURL"][0]
+
+		return item
 	end
 end
